@@ -5,23 +5,25 @@ import { useSearchParams } from "next/navigation";
 export default function Main() {
   const searchParams = useSearchParams();
   const [input, setInput] = useState("");
-  const [buttons, setButtons] = useState([]); // State to hold the parsed button configurations
+  // State to hold the parsed button configurations including names
+  const [buttons, setButtons] = useState([]);
 
   // Function to handle input changes
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setInput(e.target.value);
   }
 
-  // Effect to parse button URLs from the query parameters and prepare them for rendering
+  // Effect to parse button URLs and names from the query parameters
   useEffect(() => {
     const buttonTemplates = searchParams.get("buttons");
     if (buttonTemplates) {
       try {
-        // Parse the URL-encoded JSON array and replace '*' with '${input}' for template literals
+        // Parse the URL-encoded JSON array
         const parsedTemplates = JSON.parse(decodeURIComponent(buttonTemplates));
-        const preparedTemplates = parsedTemplates.map((template) =>
-          template.replace(/\*/g, "${input}")
-        );
+        const preparedTemplates = parsedTemplates.map(({ name, link }) => ({
+          name: name,
+          link: link.replace(/\*/g, "${input}"), // Replace '*' with '${input}' for template literals
+        }));
         setButtons(preparedTemplates);
       } catch (error) {
         console.error("Error parsing buttons parameter:", error);
@@ -45,15 +47,18 @@ export default function Main() {
         value={input}
         onChange={handleChange}
       />
-      {buttons.map((buttonLink, index) => (
-        <button
-          key={index}
-          onClick={() => handleButtonClick(buttonLink)}
-          className="btn btn-primary"
-        >
-          Go to Link {index + 1}
-        </button>
-      ))}
+
+      <div className="flex flex-col gap-4 mt-4">
+        {buttons.map((button, index) => (
+          <button
+            key={index}
+            onClick={() => handleButtonClick(button.link)}
+            className="btn btn-primary"
+          >
+            Go to {button.name} {/* Display the name of the link */}
+          </button>
+        ))}
+      </div>
     </div>
   );
 }
