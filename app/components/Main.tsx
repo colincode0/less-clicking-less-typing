@@ -2,11 +2,17 @@
 import React, { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 
+// Define a type for the button configuration
+type ButtonConfig = {
+  name: string;
+  link: string;
+};
+
 export default function Main() {
   const searchParams = useSearchParams();
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState<string>(""); // Specify string type for input
   // State to hold the parsed button configurations including names
-  const [buttons, setButtons] = useState([]);
+  const [buttons, setButtons] = useState<ButtonConfig[]>([]); // Use ButtonConfig type for buttons array
 
   // Function to handle input changes
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -19,9 +25,11 @@ export default function Main() {
     if (buttonTemplates) {
       try {
         // Parse the URL-encoded JSON array
-        const parsedTemplates = JSON.parse(decodeURIComponent(buttonTemplates));
+        const parsedTemplates: ButtonConfig[] = JSON.parse(
+          decodeURIComponent(buttonTemplates)
+        );
         const preparedTemplates = parsedTemplates.map(({ name, link }) => ({
-          name: name,
+          name,
           link: link.replace(/\*/g, "${input}"), // Replace '*' with '${input}' for template literals
         }));
         setButtons(preparedTemplates);
@@ -32,7 +40,7 @@ export default function Main() {
   }, [searchParams]); // Depend on searchParams to re-run this effect when searchParams change
 
   // Function to handle button click: Opens the specified URL in a new tab
-  function handleButtonClick(buttonLink) {
+  function handleButtonClick(buttonLink: string) {
     const url = eval("`" + buttonLink + "`"); // Use template literal to insert input
     window.open(url, "_blank");
   }
@@ -47,7 +55,6 @@ export default function Main() {
         value={input}
         onChange={handleChange}
       />
-
       <div className="flex flex-col gap-4 mt-4">
         {buttons.map((button, index) => (
           <button
