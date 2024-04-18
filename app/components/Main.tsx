@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation"; // Ensure correct import
 
 // Define a type for the button configuration
 type ButtonConfig = {
@@ -9,39 +9,45 @@ type ButtonConfig = {
 };
 
 export default function Main() {
+  const router = useRouter();
   const searchParams = useSearchParams();
-  const [input, setInput] = useState<string>(""); // Specify string type for input
-  // State to hold the parsed button configurations including names
-  const [buttons, setButtons] = useState<ButtonConfig[]>([]); // Use ButtonConfig type for buttons array
+  const [input, setInput] = useState<string>("");
+  const [newTitle, setNewTitle] = useState<string>("");
+  const [newLink, setNewLink] = useState<string>("");
+  const [buttons, setButtons] = useState<ButtonConfig[]>([]);
 
-  // Function to handle input changes
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setInput(e.target.value);
   }
 
-  // Effect to parse button URLs and names from the query parameters
+  const handleNewTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNewTitle(e.target.value);
+  };
+
+  const handleNewLinkChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNewLink(e.target.value);
+  };
+
   useEffect(() => {
     const buttonTemplates = searchParams.get("buttons");
     if (buttonTemplates) {
       try {
-        // Parse the URL-encoded JSON array
         const parsedTemplates: ButtonConfig[] = JSON.parse(
           decodeURIComponent(buttonTemplates)
         );
         const preparedTemplates = parsedTemplates.map(({ name, link }) => ({
           name,
-          link: link.replace(/\*/g, "${input}"), // Replace '*' with '${input}' for template literals
+          link: link.replace(/\*/g, "${input}"),
         }));
         setButtons(preparedTemplates);
       } catch (error) {
         console.error("Error parsing buttons parameter:", error);
       }
     }
-  }, [searchParams]); // Depend on searchParams to re-run this effect when searchParams change
+  }, [searchParams]);
 
-  // Function to handle button click: Opens the specified URL in a new tab
   function handleButtonClick(buttonLink: string) {
-    const url = eval("`" + buttonLink + "`"); // Use template literal to insert input
+    const url = eval("`" + buttonLink + "`");
     window.open(url, "_blank");
   }
 
@@ -62,9 +68,44 @@ export default function Main() {
             onClick={() => handleButtonClick(button.link)}
             className="btn btn-primary"
           >
-            Go to {button.name} {/* Display the name of the link */}
+            Go to {button.name}
           </button>
         ))}
+        <div>Add a new button: Title</div>
+        <input
+          type="text"
+          placeholder="New Button"
+          className="input input-bordered w-full max-w-xs"
+          value={newTitle}
+          onChange={handleNewTitleChange}
+        />
+        <div>Url (use * as a placeholder for the input)</div>
+        <input
+          type="text"
+          placeholder="New Link"
+          className="input input-bordered w-full max-w-xs"
+          value={newLink}
+          onChange={handleNewLinkChange}
+        />
+        <button
+          onClick={() => {
+            const updatedButtons = [
+              ...buttons,
+              { name: newTitle, link: newLink },
+            ];
+            setButtons(updatedButtons);
+            router.push(
+              `/?buttons=${encodeURIComponent(JSON.stringify(updatedButtons))}`,
+              undefined,
+              { shallow: true }
+            );
+            setNewTitle("");
+            setNewLink("");
+          }}
+          className="btn btn-secondary"
+        >
+          Add Button
+        </button>
       </div>
     </div>
   );
