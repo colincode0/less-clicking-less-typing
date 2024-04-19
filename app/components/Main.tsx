@@ -44,8 +44,12 @@ export default function Main() {
       } catch (error) {
         console.error("Error parsing buttons parameter:", error);
       }
+    } else {
+      const defaultButtonsUrl =
+        "/?buttons=%5B%7B%22name%22%3A%22stockcharts%22%2C%22link%22%3A%22https%3A%2F%2Fstockcharts.com%2Fsc3%2Fui%2F%3Fs%3D%24%7Binput%7D%22%7D%2C%7B%22name%22%3A%22marketwatch%22%2C%22link%22%3A%22https%3A%2F%2Fwww.marketwatch.com%2Finvesting%2Fstock%2F%24%7Binput%7D%3Fmod%3Dsearch_symbol%22%7D%2C%7B%22name%22%3A%22Open%20Insider%22%2C%22link%22%3A%22http%3A%2F%2Fopeninsider.com%2Fscreener%3Fs%3D*%26o%3D%26pl%3D%26ph%3D%26ll%3D%26lh%3D%26fd%3D730%26fdr%3D%26td%3D0%26tdr%3D%26fdlyl%3D%26fdlyh%3D%26daysago%3D%26xp%3D1%26xs%3D1%26vl%3D%26vh%3D%26ocl%3D%26och%3D%26sic1%3D-1%26sicl%3D100%26sich%3D9999%26grp%3D0%26nfl%3D%26nfh%3D%26nil%3D%26nih%3D%26nol%3D%26noh%3D%26v2l%3D%26v2h%3D%26oc2l%3D%26oc2h%3D%26sortcol%3D0%26cnt%3D100%26page%3D1%22%7D%5D";
+      router.push(defaultButtonsUrl);
     }
-  }, [searchParams]);
+  }, [router, searchParams]);
 
   function handleButtonClick(buttonLink: string) {
     const url = eval("`" + buttonLink + "`");
@@ -63,7 +67,7 @@ export default function Main() {
 
   return (
     <div>
-      <h1>Main</h1>
+      {/* <h1>Main</h1> */}
       <input
         type="text"
         placeholder="Add ticker here"
@@ -72,24 +76,6 @@ export default function Main() {
         onChange={handleChange}
       />
       <div className="flex flex-col gap-4 mt-4">
-        {input &&
-          buttons.map((button, index) => (
-            <div key={index} className="flex items-center">
-              <button
-                className="btn btn-error mr-2"
-                onClick={() => handleRemoveButton(index)}
-                title="Remove Button"
-              >
-                X
-              </button>
-              <button
-                onClick={() => handleButtonClick(button.link)}
-                className="btn btn-primary"
-              >
-                Go to {button.name}
-              </button>
-            </div>
-          ))}
         <button
           onClick={() => setAddingButton(!addingButton)}
           className="btn btn-secondary"
@@ -164,6 +150,24 @@ export default function Main() {
             </div>
           </motion.div>
         )}
+        {input &&
+          buttons.map((button, index) => (
+            <div key={index} className="flex items-center">
+              <button
+                className="btn btn-error mr-2"
+                onClick={() => handleRemoveButton(index)}
+                title="Remove Button"
+              >
+                X
+              </button>
+              <button
+                onClick={() => handleButtonClick(button.link)}
+                className="btn btn-primary"
+              >
+                Go to {button.name}
+              </button>
+            </div>
+          ))}
       </div>
     </div>
   );
