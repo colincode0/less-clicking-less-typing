@@ -87,7 +87,9 @@ export default function Main() {
       />
       <div className="flex flex-col gap-4 mt-4">
         <button
-          onClick={() => setAddingButton(!addingButton)}
+          onClick={() => (
+            setAddingButton(!addingButton), setHowItWorksOpen(false)
+          )}
           //   className={`btn ${addingButton ? "btn-error" : "btn-warning"}`}
           className="btn btn-warning"
         >
@@ -141,7 +143,7 @@ export default function Main() {
               damping: 20,
             }}
           >
-            <div className="flex flex-col gap-4 mt-4 bg-neutral-900 rounded-lg p-4">
+            <div className="flex flex-col gap-4  bg-neutral-900 rounded-lg p-4">
               <div>
                 You need two things to make a new button. A title and a link.
                 Enter the title below, then read the link formatting
