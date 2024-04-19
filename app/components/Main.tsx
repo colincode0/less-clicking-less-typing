@@ -94,19 +94,23 @@ export default function Main() {
           onClick={() => setAddingButton(!addingButton)}
           className="btn btn-secondary"
         >
-          {addingButton ? "Cancel" : "Add New Link Button"}
+          {addingButton ? "Cancel" : "Add A New Link Button"}
         </button>
         {addingButton && (
           <>
-            <div>Add a new button: Title</div>
+            <div>Title</div>
             <input
               type="text"
-              placeholder="New Button"
+              placeholder="Button Title"
               className="input input-bordered w-full max-w-xs"
               value={newTitle}
               onChange={handleNewTitleChange}
             />
-            <div>Url (use * as a placeholder for the input)</div>
+            <div>
+              You must edit your link so that the * character replaces ticker in
+              the url wherever the ticker appears.
+            </div>
+            {`https://stockcharts.com/sc3/ui/?s=AAPL -> https://stockcharts.com/sc3/ui/?s=*`}
             <input
               type="text"
               placeholder="New Link"
