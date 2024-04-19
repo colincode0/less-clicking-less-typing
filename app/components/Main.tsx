@@ -15,6 +15,7 @@ export default function Main() {
   const [newTitle, setNewTitle] = useState<string>("");
   const [newLink, setNewLink] = useState<string>("");
   const [buttons, setButtons] = useState<ButtonConfig[]>([]);
+  const [addingButton, setAddingButton] = useState<boolean>(false);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setInput(e.target.value);
@@ -51,61 +52,91 @@ export default function Main() {
     window.open(url, "_blank");
   }
 
+  function handleRemoveButton(index: number) {
+    const updatedButtons = buttons.filter((_, i) => i !== index);
+    setButtons(updatedButtons);
+    router.push(
+      `/?buttons=${encodeURIComponent(JSON.stringify(updatedButtons))}`,
+      undefined
+    );
+  }
+
   return (
     <div>
       <h1>Main</h1>
       <input
         type="text"
-        placeholder="Type here"
+        placeholder="Add a ticker here to view link buttons"
         className="input input-bordered w-full max-w-xs"
         value={input}
         onChange={handleChange}
       />
       <div className="flex flex-col gap-4 mt-4">
-        {buttons.map((button, index) => (
-          <button
-            key={index}
-            onClick={() => handleButtonClick(button.link)}
-            className="btn btn-primary"
-          >
-            Go to {button.name}
-          </button>
-        ))}
-        <div>Add a new button: Title</div>
-        <input
-          type="text"
-          placeholder="New Button"
-          className="input input-bordered w-full max-w-xs"
-          value={newTitle}
-          onChange={handleNewTitleChange}
-        />
-        <div>Url (use * as a placeholder for the input)</div>
-        <input
-          type="text"
-          placeholder="New Link"
-          className="input input-bordered w-full max-w-xs"
-          value={newLink}
-          onChange={handleNewLinkChange}
-        />
+        {input &&
+          buttons.map((button, index) => (
+            <div key={index} className="flex items-center">
+              <button
+                className="btn btn-error mr-2"
+                onClick={() => handleRemoveButton(index)}
+                title="Remove Button"
+              >
+                X
+              </button>
+              <button
+                onClick={() => handleButtonClick(button.link)}
+                className="btn btn-primary"
+              >
+                Go to {button.name}
+              </button>
+            </div>
+          ))}
         <button
-          onClick={() => {
-            const updatedButtons = [
-              ...buttons,
-              { name: newTitle, link: newLink },
-            ];
-            setButtons(updatedButtons);
-            router.push(
-              `/?buttons=${encodeURIComponent(JSON.stringify(updatedButtons))}`,
-              undefined,
-              { shallow: true }
-            );
-            setNewTitle("");
-            setNewLink("");
-          }}
+          onClick={() => setAddingButton(!addingButton)}
           className="btn btn-secondary"
         >
-          Add Button
+          {addingButton ? "Cancel" : "Add New Link Button"}
         </button>
+        {addingButton && (
+          <>
+            <div>Add a new button: Title</div>
+            <input
+              type="text"
+              placeholder="New Button"
+              className="input input-bordered w-full max-w-xs"
+              value={newTitle}
+              onChange={handleNewTitleChange}
+            />
+            <div>Url (use * as a placeholder for the input)</div>
+            <input
+              type="text"
+              placeholder="New Link"
+              className="input input-bordered w-full max-w-xs"
+              value={newLink}
+              onChange={handleNewLinkChange}
+            />
+            <button
+              onClick={() => {
+                const updatedButtons = [
+                  ...buttons,
+                  { name: newTitle, link: newLink },
+                ];
+                setButtons(updatedButtons);
+                router.push(
+                  `/?buttons=${encodeURIComponent(
+                    JSON.stringify(updatedButtons)
+                  )}`,
+                  undefined
+                );
+                setNewTitle("");
+                setNewLink("");
+                setAddingButton(false);
+              }}
+              className="btn btn-secondary"
+            >
+              Add Button
+            </button>
+          </>
+        )}
       </div>
     </div>
   );
