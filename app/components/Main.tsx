@@ -25,6 +25,7 @@ export default function Main() {
   const [buttons, setButtons] = useState<ButtonConfig[]>([]);
   const [addingButton, setAddingButton] = useState<boolean>(false);
   const [linkCopied, setLinkCopied] = useState<boolean>(false);
+  const [howItWorksOpen, setHowItWorksOpen] = useState<boolean>(false);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setInput(e.target.value);
@@ -93,6 +94,76 @@ export default function Main() {
           {addingButton ? "Cancel" : "Edit Buttons / Add A New Link Button"}
         </button>
         {addingButton && (
+          <>
+            <button
+              onClick={() => {
+                navigator.clipboard.writeText(
+                  `/?buttons=${encodeURIComponent(JSON.stringify(buttons))}`
+                );
+                setLinkCopied(true);
+                setTimeout(() => {
+                  setLinkCopied(false);
+                }, 2000);
+              }}
+              className="btn btn-success"
+            >
+              Copy Layout Link to Share
+            </button>
+            {linkCopied && (
+              <div
+                className="absolute top-0 left-1/2 transform -translate-x-1/2 mt-4 z-50"
+                style={{ maxWidth: "calc(100% - 1rem)" }}
+              >
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{
+                    type: "spring",
+                    stiffness: 260,
+                    damping: 20,
+                  }}
+                >
+                  <div role="alert" className="alert alert-primary">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      className="stroke-current shrink-0 w-6 h-6"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                      ></path>
+                    </svg>
+                    <span>Link Copied</span>
+                  </div>
+                </motion.div>
+              </div>
+            )}
+          </>
+        )}
+        {!input && !addingButton && (
+          <button
+            onClick={() => setHowItWorksOpen(!howItWorksOpen)}
+            className={`btn ${howItWorksOpen ? "btn-error" : "btn-success"}`}
+          >
+            {howItWorksOpen ? "Close How It Works" : "How It Works"}
+          </button>
+        )}
+
+        {howItWorksOpen && (
+          <div
+            className={`flex flex-col gap-4 bg-neutral-900 rounded-lg p-4 ${
+              addingButton ? "" : "max-w-md"
+            }`}
+          >
+            <HowItWorks />
+          </div>
+        )}
+
+        {addingButton && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -103,55 +174,6 @@ export default function Main() {
             }}
           >
             <div className="flex flex-col gap-4 mt-4 bg-neutral-900 rounded-lg p-4">
-              {/* //copy link button */}
-              <button
-                onClick={() => {
-                  navigator.clipboard.writeText(
-                    `/?buttons=${encodeURIComponent(JSON.stringify(buttons))}`
-                  );
-                  setLinkCopied(true);
-                  setTimeout(() => {
-                    setLinkCopied(false);
-                  }, 2000);
-                }}
-                className="btn btn-primary"
-              >
-                Copy Layout Link to Share
-              </button>
-              {linkCopied && (
-                <div
-                  className="absolute top-0 left-1/2 transform -translate-x-1/2 mt-4 z-50"
-                  style={{ maxWidth: "calc(100% - 1rem)" }}
-                >
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{
-                      type: "spring",
-                      stiffness: 260,
-                      damping: 20,
-                    }}
-                  >
-                    <div role="alert" className="alert alert-info">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        className="stroke-current shrink-0 w-6 h-6"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                        ></path>
-                      </svg>
-                      <span>Link Copied</span>
-                    </div>
-                  </motion.div>
-                </div>
-              )}
-
               <div>
                 You need two things to make a new button. A title and a link.
                 Enter the title below, then read the link formatting
@@ -210,7 +232,7 @@ export default function Main() {
           </motion.div>
         )}
         <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3`}>
-          {input &&
+          {(input || addingButton) &&
             buttons.map((button, index) => (
               <div
                 key={index}
@@ -238,3 +260,22 @@ export default function Main() {
     </div>
   );
 }
+
+const HowItWorks = () => {
+  return (
+    <>
+      <div>This website creates a visual directory for dynamic links.</div>
+      <div>
+        The idea is to have links to everything on one page, with the ability to
+        instantly swap the current asset being analyzed.
+      </div>
+      <div>
+        All layout information is stored in the URL, so you can bookmark your
+        layout or share it with others.
+      </div>
+      <div>
+        {`The links are customizable, so you can add or remove buttons as needed by opening the "Edit Buttons" section.`}
+      </div>
+    </>
+  );
+};
