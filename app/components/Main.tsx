@@ -1,8 +1,8 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { useSearchParams, useRouter } from "next/navigation"; // Ensure correct import
+import { useSearchParams, useRouter } from "next/navigation";
+import { motion } from "framer-motion";
 
-// Define a type for the button configuration
 type ButtonConfig = {
   name: string;
   link: string;
@@ -97,49 +97,59 @@ export default function Main() {
           {addingButton ? "Cancel" : "Add A New Link Button"}
         </button>
         {addingButton && (
-          <>
-            <div>Title</div>
-            <input
-              type="text"
-              placeholder="Button Title"
-              className="input input-bordered w-full max-w-xs"
-              value={newTitle}
-              onChange={handleNewTitleChange}
-            />
-            <div>
-              You must edit your link so that the * character replaces ticker in
-              the url wherever the ticker appears.
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{
+              type: "spring",
+              stiffness: 260,
+              damping: 20,
+            }}
+          >
+            <div className="flex flex-col gap-4 mt-4">
+              <div>Title</div>
+              <input
+                type="text"
+                placeholder="Button Title"
+                className="input input-bordered w-full max-w-xs"
+                value={newTitle}
+                onChange={handleNewTitleChange}
+              />
+              <div>
+                You must edit your link so that the * character replaces ticker
+                in the url wherever the ticker appears.
+              </div>
+              {`https://stockcharts.com/sc3/ui/?s=AAPL -> https://stockcharts.com/sc3/ui/?s=*`}
+              <input
+                type="text"
+                placeholder="New Link"
+                className="input input-bordered w-full max-w-xs"
+                value={newLink}
+                onChange={handleNewLinkChange}
+              />
+              <button
+                onClick={() => {
+                  const updatedButtons = [
+                    ...buttons,
+                    { name: newTitle, link: newLink },
+                  ];
+                  setButtons(updatedButtons);
+                  router.push(
+                    `/?buttons=${encodeURIComponent(
+                      JSON.stringify(updatedButtons)
+                    )}`,
+                    undefined
+                  );
+                  setNewTitle("");
+                  setNewLink("");
+                  setAddingButton(false);
+                }}
+                className="btn btn-secondary"
+              >
+                Add Button
+              </button>
             </div>
-            {`https://stockcharts.com/sc3/ui/?s=AAPL -> https://stockcharts.com/sc3/ui/?s=*`}
-            <input
-              type="text"
-              placeholder="New Link"
-              className="input input-bordered w-full max-w-xs"
-              value={newLink}
-              onChange={handleNewLinkChange}
-            />
-            <button
-              onClick={() => {
-                const updatedButtons = [
-                  ...buttons,
-                  { name: newTitle, link: newLink },
-                ];
-                setButtons(updatedButtons);
-                router.push(
-                  `/?buttons=${encodeURIComponent(
-                    JSON.stringify(updatedButtons)
-                  )}`,
-                  undefined
-                );
-                setNewTitle("");
-                setNewLink("");
-                setAddingButton(false);
-              }}
-              className="btn btn-secondary"
-            >
-              Add Button
-            </button>
-          </>
+          </motion.div>
         )}
       </div>
     </div>

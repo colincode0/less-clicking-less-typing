@@ -5,7 +5,7 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Less",
+  title: "Less Clicking Less Typing",
   description: "Less Clicking Less Typing",
 };
 
