@@ -103,45 +103,13 @@ export default function Main() {
                 setLinkCopied(true);
                 setTimeout(() => {
                   setLinkCopied(false);
-                }, 2000);
+                }, 1500);
               }}
               className="btn btn-success"
             >
               Copy Layout Link to Share
             </button>
-            {linkCopied && (
-              <div
-                className="absolute top-0 left-1/2 transform -translate-x-1/2 mt-4 z-50"
-                style={{ maxWidth: "calc(100% - 1rem)" }}
-              >
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{
-                    type: "spring",
-                    stiffness: 260,
-                    damping: 20,
-                  }}
-                >
-                  <div role="alert" className="alert alert-primary">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      className="stroke-current shrink-0 w-6 h-6"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                      ></path>
-                    </svg>
-                    <span>Link Copied</span>
-                  </div>
-                </motion.div>
-              </div>
-            )}
+            {linkCopied && <CopiedLinkAlert />}
           </>
         )}
         {!input && !addingButton && (
@@ -260,6 +228,42 @@ export default function Main() {
     </div>
   );
 }
+
+const CopiedLinkAlert = () => {
+  return (
+    <div
+      className="absolute top-0 left-1/2 transform -translate-x-1/2 mt-4 z-50"
+      style={{ maxWidth: "calc(100% - 1rem)" }}
+    >
+      <motion.div
+        initial={{ opacity: 0, scale: 0.1 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{
+          type: "spring",
+          stiffness: 260,
+          damping: 20,
+        }}
+      >
+        <div role="alert" className="alert alert-success">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            className="stroke-current shrink-0 w-6 h-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            ></path>
+          </svg>
+          <span>Link Copied</span>
+        </div>
+      </motion.div>
+    </div>
+  );
+};
 
 const HowItWorks = () => {
   return (
