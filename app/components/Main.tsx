@@ -24,6 +24,7 @@ export default function Main() {
   const [newLink, setNewLink] = useState<string>("");
   const [buttons, setButtons] = useState<ButtonConfig[]>([]);
   const [addingButton, setAddingButton] = useState<boolean>(false);
+  const [linkCopied, setLinkCopied] = useState<boolean>(false);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setInput(e.target.value);
@@ -86,8 +87,8 @@ export default function Main() {
       <div className="flex flex-col gap-4 mt-4">
         <button
           onClick={() => setAddingButton(!addingButton)}
-          // change button color depending on addingButton state
-          className={`btn ${addingButton ? "btn-error" : "btn-warning"}`}
+          //   className={`btn ${addingButton ? "btn-error" : "btn-warning"}`}
+          className="btn btn-warning"
         >
           {addingButton ? "Cancel" : "Edit Buttons / Add A New Link Button"}
         </button>
@@ -101,7 +102,56 @@ export default function Main() {
               damping: 20,
             }}
           >
-            <div className="flex flex-col gap-4 mt-4">
+            <div className="flex flex-col gap-4 mt-4 bg-neutral-900 rounded-lg p-4">
+              {/* //copy link button */}
+              <button
+                onClick={() => {
+                  navigator.clipboard.writeText(
+                    `/?buttons=${encodeURIComponent(JSON.stringify(buttons))}`
+                  );
+                  setLinkCopied(true);
+                  setTimeout(() => {
+                    setLinkCopied(false);
+                  }, 2000);
+                }}
+                className="btn btn-primary"
+              >
+                Copy Layout Link to Share
+              </button>
+              {linkCopied && (
+                <div
+                  className="absolute top-0 left-1/2 transform -translate-x-1/2 mt-4 z-50"
+                  style={{ maxWidth: "calc(100% - 1rem)" }}
+                >
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{
+                      type: "spring",
+                      stiffness: 260,
+                      damping: 20,
+                    }}
+                  >
+                    <div role="alert" className="alert alert-info">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        className="stroke-current shrink-0 w-6 h-6"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                        ></path>
+                      </svg>
+                      <span>Link Copied</span>
+                    </div>
+                  </motion.div>
+                </div>
+              )}
+
               <div>
                 You need two things to make a new button. A title and a link.
                 Enter the title below, then read the link formatting
