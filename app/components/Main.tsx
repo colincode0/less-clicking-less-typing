@@ -66,8 +66,8 @@ export default function Main() {
       <h1>Main</h1>
       <input
         type="text"
-        placeholder="Add a ticker here to view link buttons"
-        className="input input-bordered w-full max-w-xs"
+        placeholder="Add ticker here"
+        className="input input-bordered input-lg w-full max-w-xs"
         value={input}
         onChange={handleChange}
       />
@@ -107,7 +107,11 @@ export default function Main() {
             }}
           >
             <div className="flex flex-col gap-4 mt-4">
-              <div>Title</div>
+              <div>
+                You need two things to make a new button. A title and a link.
+                Enter the title below, then read the link formatting
+                instructions.
+              </div>
               <input
                 type="text"
                 placeholder="Button Title"
@@ -117,9 +121,18 @@ export default function Main() {
               />
               <div>
                 You must edit your link so that the * character replaces ticker
-                in the url wherever the ticker appears.
+                in the url wherever that ticker appears.
               </div>
-              {`https://stockcharts.com/sc3/ui/?s=AAPL -> https://stockcharts.com/sc3/ui/?s=*`}
+              <div className="flex flex-col gap-1 p-5">
+                <div className="text-xs">This link below</div>
+                <div className="text-lg ml-2">{`https://stockcharts.com/sc3/ui/?s=AAPL`}</div>
+                <div className="text-xs">should be edited to</div>
+                <div className="text-lg ml-2">{`https://stockcharts.com/sc3/ui/?s=*`}</div>
+                <div className="text-xs">
+                  and the edited link should be pasted in the New Link textbox
+                  below
+                </div>
+              </div>
               <input
                 type="text"
                 placeholder="New Link"
