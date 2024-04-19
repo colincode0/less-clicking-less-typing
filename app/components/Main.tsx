@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { Suspense } from "react";
 
 type ButtonConfig = {
   name: string;
@@ -64,110 +63,108 @@ export default function Main() {
 
   return (
     <div>
-      <Suspense>
-        <h1>Main</h1>
-        <input
-          type="text"
-          placeholder="Add ticker here"
-          className="input input-bordered input-lg w-full max-w-xs"
-          value={input}
-          onChange={handleChange}
-        />
-        <div className="flex flex-col gap-4 mt-4">
-          {input &&
-            buttons.map((button, index) => (
-              <div key={index} className="flex items-center">
-                <button
-                  className="btn btn-error mr-2"
-                  onClick={() => handleRemoveButton(index)}
-                  title="Remove Button"
-                >
-                  X
-                </button>
-                <button
-                  onClick={() => handleButtonClick(button.link)}
-                  className="btn btn-primary"
-                >
-                  Go to {button.name}
-                </button>
-              </div>
-            ))}
-          <button
-            onClick={() => setAddingButton(!addingButton)}
-            className="btn btn-secondary"
+      <h1>Main</h1>
+      <input
+        type="text"
+        placeholder="Add ticker here"
+        className="input input-bordered input-lg w-full max-w-xs"
+        value={input}
+        onChange={handleChange}
+      />
+      <div className="flex flex-col gap-4 mt-4">
+        {input &&
+          buttons.map((button, index) => (
+            <div key={index} className="flex items-center">
+              <button
+                className="btn btn-error mr-2"
+                onClick={() => handleRemoveButton(index)}
+                title="Remove Button"
+              >
+                X
+              </button>
+              <button
+                onClick={() => handleButtonClick(button.link)}
+                className="btn btn-primary"
+              >
+                Go to {button.name}
+              </button>
+            </div>
+          ))}
+        <button
+          onClick={() => setAddingButton(!addingButton)}
+          className="btn btn-secondary"
+        >
+          {addingButton ? "Cancel" : "Add A New Link Button"}
+        </button>
+        {addingButton && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{
+              type: "spring",
+              stiffness: 260,
+              damping: 20,
+            }}
           >
-            {addingButton ? "Cancel" : "Add A New Link Button"}
-          </button>
-          {addingButton && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{
-                type: "spring",
-                stiffness: 260,
-                damping: 20,
-              }}
-            >
-              <div className="flex flex-col gap-4 mt-4">
-                <div>
-                  You need two things to make a new button. A title and a link.
-                  Enter the title below, then read the link formatting
-                  instructions.
-                </div>
-                <input
-                  type="text"
-                  placeholder="Button Title"
-                  className="input input-bordered w-full max-w-xs"
-                  value={newTitle}
-                  onChange={handleNewTitleChange}
-                />
-                <div>
-                  You must edit your link so that the * character replaces
-                  ticker in the url wherever that ticker appears.
-                </div>
-                <div className="flex flex-col gap-1 p-5">
-                  <div className="text-xs">This link below</div>
-                  <div className="text-lg ml-2">{`https://stockcharts.com/sc3/ui/?s=AAPL`}</div>
-                  <div className="text-xs">should be edited to</div>
-                  <div className="text-lg ml-2">{`https://stockcharts.com/sc3/ui/?s=*`}</div>
-                  <div className="text-xs">
-                    and the edited link should be pasted in the New Link textbox
-                    below
-                  </div>
-                </div>
-                <input
-                  type="text"
-                  placeholder="New Link"
-                  className="input input-bordered w-full max-w-xs"
-                  value={newLink}
-                  onChange={handleNewLinkChange}
-                />
-                <button
-                  onClick={() => {
-                    const updatedButtons = [
-                      ...buttons,
-                      { name: newTitle, link: newLink },
-                    ];
-                    setButtons(updatedButtons);
-                    router.push(
-                      `/?buttons=${encodeURIComponent(
-                        JSON.stringify(updatedButtons)
-                      )}`,
-                      undefined
-                    );
-                    setNewTitle("");
-                    setNewLink("");
-                    setAddingButton(false);
-                  }}
-                  className="btn btn-secondary"
-                >
-                  Add Button
-                </button>
+            <div className="flex flex-col gap-4 mt-4">
+              <div>
+                You need two things to make a new button. A title and a link.
+                Enter the title below, then read the link formatting
+                instructions.
               </div>
-            </motion.div>
-          )}
-        </div>
-      </Suspense>
+              <input
+                type="text"
+                placeholder="Button Title"
+                className="input input-bordered w-full max-w-xs"
+                value={newTitle}
+                onChange={handleNewTitleChange}
+              />
+              <div>
+                You must edit your link so that the * character replaces ticker
+                in the url wherever that ticker appears.
+              </div>
+              <div className="flex flex-col gap-1 p-5">
+                <div className="text-xs">This link below</div>
+                <div className="text-lg ml-2">{`https://stockcharts.com/sc3/ui/?s=AAPL`}</div>
+                <div className="text-xs">should be edited to</div>
+                <div className="text-lg ml-2">{`https://stockcharts.com/sc3/ui/?s=*`}</div>
+                <div className="text-xs">
+                  and the edited link should be pasted in the New Link textbox
+                  below
+                </div>
+              </div>
+              <input
+                type="text"
+                placeholder="New Link"
+                className="input input-bordered w-full max-w-xs"
+                value={newLink}
+                onChange={handleNewLinkChange}
+              />
+              <button
+                onClick={() => {
+                  const updatedButtons = [
+                    ...buttons,
+                    { name: newTitle, link: newLink },
+                  ];
+                  setButtons(updatedButtons);
+                  router.push(
+                    `/?buttons=${encodeURIComponent(
+                      JSON.stringify(updatedButtons)
+                    )}`,
+                    undefined
+                  );
+                  setNewTitle("");
+                  setNewLink("");
+                  setAddingButton(false);
+                }}
+                className="btn btn-secondary"
+              >
+                Add Button
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </div>
     </div>
   );
 }
