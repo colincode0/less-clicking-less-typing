@@ -86,7 +86,8 @@ export default function Main() {
       <div className="flex flex-col gap-4 mt-4">
         <button
           onClick={() => setAddingButton(!addingButton)}
-          className="btn btn-secondary"
+          // change button color depending on addingButton state
+          className={`btn ${addingButton ? "btn-error" : "btn-warning"}`}
         >
           {addingButton ? "Cancel" : "Edit Buttons / Add A New Link Button"}
         </button>
@@ -151,7 +152,7 @@ export default function Main() {
                   setNewLink("");
                   setAddingButton(false);
                 }}
-                className="btn btn-secondary"
+                className="btn btn-warning"
               >
                 Add Button
               </button>
