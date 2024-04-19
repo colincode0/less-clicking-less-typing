@@ -8,6 +8,14 @@ type ButtonConfig = {
   link: string;
 };
 
+// Define the styles for the button container
+const buttonContainerStyle = {
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center", // Center the buttons horizontally
+  gap: "10px", // Add space between buttons
+};
+
 export default function Main() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -66,7 +74,7 @@ export default function Main() {
   }
 
   return (
-    <div>
+    <div className="flex flex-col items-center justify-center">
       {/* <h1>Main</h1> */}
       <input
         type="text"
@@ -80,7 +88,7 @@ export default function Main() {
           onClick={() => setAddingButton(!addingButton)}
           className="btn btn-secondary"
         >
-          {addingButton ? "Cancel" : "Add A New Link Button"}
+          {addingButton ? "Cancel" : "Edit Buttons / Add A New Link Button"}
         </button>
         {addingButton && (
           <motion.div
@@ -115,13 +123,13 @@ export default function Main() {
                 <div className="text-xs">should be edited to</div>
                 <div className="text-lg ml-2">{`https://stockcharts.com/sc3/ui/?s=*`}</div>
                 <div className="text-xs">
-                  and the edited link should be pasted in the New Link textbox
+                  and this edited link should be pasted in the New Link textbox
                   below
                 </div>
               </div>
               <input
                 type="text"
-                placeholder="New Link"
+                placeholder="Edited Link"
                 className="input input-bordered w-full max-w-xs"
                 value={newLink}
                 onChange={handleNewLinkChange}
@@ -150,24 +158,31 @@ export default function Main() {
             </div>
           </motion.div>
         )}
-        {input &&
-          buttons.map((button, index) => (
-            <div key={index} className="flex items-center">
-              <button
-                className="btn btn-error mr-2"
-                onClick={() => handleRemoveButton(index)}
-                title="Remove Button"
+        <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3`}>
+          {input &&
+            buttons.map((button, index) => (
+              <div
+                key={index}
+                className="flex items-center justify-center gap-3"
               >
-                X
-              </button>
-              <button
-                onClick={() => handleButtonClick(button.link)}
-                className="btn btn-primary"
-              >
-                Go to {button.name}
-              </button>
-            </div>
-          ))}
+                {addingButton && (
+                  <button
+                    className="btn btn-error"
+                    onClick={() => handleRemoveButton(index)}
+                    title="Remove Button"
+                  >
+                    X
+                  </button>
+                )}
+                <button
+                  onClick={() => handleButtonClick(button.link)}
+                  className="btn btn-primary overflow-wrap btn-wide"
+                >
+                  Go to {button.name}
+                </button>
+              </div>
+            ))}
+        </div>
       </div>
     </div>
   );
