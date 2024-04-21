@@ -95,6 +95,13 @@ export default function Main() {
     );
   }
 
+  function handleOpenAllLinks() {
+    buttons.forEach((button) => {
+      const url = eval("`" + button.link + "`");
+      window.open(url, "_blank");
+    });
+  }
+
   return (
     <div className="flex flex-col items-center justify-center">
       {/* <h1>Main</h1> */}
@@ -245,6 +252,14 @@ export default function Main() {
                 </button>
               </div>
             ))}
+          {/* {(input || addingButton) && (
+            <button
+              className="btn btn-accent" // Use any appropriate class for styling
+              onClick={handleOpenAllLinks}
+            >
+              Open All
+            </button>
+          )} */}
         </div>
       </div>
     </div>
