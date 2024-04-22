@@ -34,6 +34,7 @@ const defaultButtons = [
     link: "https://www.tradingview.com/chart/lJHaJwpi/?symbol=${input}",
   },
   { name: "WhaleWisdom", link: "https://whalewisdom.com/stock/*" },
+  { name: "YahooHolders", link: "https://finance.yahoo.com/quote/*/holders/" },
 ];
 
 export default function Main() {
