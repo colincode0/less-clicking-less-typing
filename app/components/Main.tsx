@@ -35,6 +35,10 @@ const defaultButtons = [
   },
   { name: "WhaleWisdom", link: "https://whalewisdom.com/stock/*" },
   { name: "YahooHolders", link: "https://finance.yahoo.com/quote/*/holders/" },
+  {
+    name: "MarketWatch Financials",
+    link: "https://www.marketwatch.com/investing/stock/*/financials?mod=mw_quote_tab",
+  },
 ];
 
 export default function Main() {
