@@ -17,10 +17,7 @@ const buttonContainerStyle = {
 };
 
 const defaultButtons = [
-  {
-    name: "StockCharts",
-    link: "https://stockcharts.com/sc3/ui/?s=${input}",
-  },
+  { name: "Fintel Short Interest", link: "https://fintel.io/ss/us/*" },
   {
     name: "MarketWatch",
     link: "https://www.marketwatch.com/investing/stock/${input}?mod=search_symbol",
@@ -39,7 +36,10 @@ const defaultButtons = [
     name: "MarketWatch Financials",
     link: "https://www.marketwatch.com/investing/stock/*/financials?mod=mw_quote_tab",
   },
-  { name: "Fintel Short Interest", link: "https://fintel.io/ss/us/*" },
+  {
+    name: "StockCharts",
+    link: "https://stockcharts.com/sc3/ui/?s=${input}",
+  },
 ];
 
 export default function Main() {
