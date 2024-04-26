@@ -23,8 +23,8 @@ const defaultButtons = [
     link: "https://www.marketwatch.com/investing/stock/${input}?mod=search_symbol",
   },
   {
-    name: "MarketWatch",
-    link: "https://www.marketwatch.com/investing/stock/${input}?mod=search_symbol",
+    name: "MarketWatch Profile",
+    link: "https://www.marketwatch.com/investing/stock/*/company-profile?mod=mw_quote_tab",
   },
   {
     name: "OpenInsider",
