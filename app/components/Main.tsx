@@ -23,6 +23,10 @@ const defaultButtons = [
     link: "https://www.marketwatch.com/investing/stock/${input}?mod=search_symbol",
   },
   {
+    name: "MarketWatch",
+    link: "https://www.marketwatch.com/investing/stock/${input}?mod=search_symbol",
+  },
+  {
     name: "OpenInsider",
     link: "http://openinsider.com/screener?s=${input}&o=&pl=&ph=&ll=&lh=&fd=730&fdr=&td=0&tdr=&fdlyl=&fdlyh=&daysago=&xp=1&xs=1&vl=&vh=&ocl=&och=&sic1=-1&sicl=100&sich=9999&grp=0&nfl=&nfh=&nil=&nih=&nol=&noh=&v2l=&v2h=&oc2l=&oc2h=&sortcol=0&cnt=100&page=1",
   },
