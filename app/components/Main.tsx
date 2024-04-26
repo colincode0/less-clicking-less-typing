@@ -39,6 +39,7 @@ const defaultButtons = [
     name: "MarketWatch Financials",
     link: "https://www.marketwatch.com/investing/stock/*/financials?mod=mw_quote_tab",
   },
+  { name: "Fintel Short Interest", link: "https://fintel.io/ss/us/*" },
 ];
 
 export default function Main() {
