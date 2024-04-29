@@ -8,12 +8,11 @@ type ButtonConfig = {
   link: string;
 };
 
-// Define the styles for the button container
 const buttonContainerStyle = {
   display: "flex",
   flexDirection: "column",
-  alignItems: "center", // Center the buttons horizontally
-  gap: "10px", // Add space between buttons
+  alignItems: "center",
+  gap: "10px",
 };
 
 const defaultButtons = [
