@@ -16,22 +16,26 @@ const buttonContainerStyle = {
 };
 
 const defaultButtons = [
-  { name: "Fintel Short Interest", link: "https://fintel.io/ss/us/*" },
-  {
-    name: "MarketWatch",
-    link: "https://www.marketwatch.com/investing/stock/${input}?mod=search_symbol",
-  },
+  // {
+  //   name: "MarketWatch",
+  //   link: "https://www.marketwatch.com/investing/stock/${input}?mod=search_symbol",
+  // },
+  // {
+  //   name: "StockCharts",
+  //   link: "https://stockcharts.com/sc3/ui/?s=${input}",
+  // },
   {
     name: "MarketWatch Profile",
     link: "https://www.marketwatch.com/investing/stock/*/company-profile?mod=mw_quote_tab",
   },
   {
-    name: "OpenInsider",
-    link: "http://openinsider.com/screener?s=${input}&o=&pl=&ph=&ll=&lh=&fd=730&fdr=&td=0&tdr=&fdlyl=&fdlyh=&daysago=&xp=1&xs=1&vl=&vh=&ocl=&och=&sic1=-1&sicl=100&sich=9999&grp=0&nfl=&nfh=&nil=&nih=&nol=&noh=&v2l=&v2h=&oc2l=&oc2h=&sortcol=0&cnt=100&page=1",
-  },
-  {
     name: "TradingView",
     link: "https://www.tradingview.com/chart/lJHaJwpi/?symbol=${input}",
+  },
+  { name: "Fintel Short Interest", link: "https://fintel.io/ss/us/*" },
+  {
+    name: "OpenInsider",
+    link: "http://openinsider.com/screener?s=${input}&o=&pl=&ph=&ll=&lh=&fd=730&fdr=&td=0&tdr=&fdlyl=&fdlyh=&daysago=&xp=1&xs=1&vl=&vh=&ocl=&och=&sic1=-1&sicl=100&sich=9999&grp=0&nfl=&nfh=&nil=&nih=&nol=&noh=&v2l=&v2h=&oc2l=&oc2h=&sortcol=0&cnt=100&page=1",
   },
   { name: "WhaleWisdom", link: "https://whalewisdom.com/stock/*" },
   { name: "YahooHolders", link: "https://finance.yahoo.com/quote/*/holders/" },
@@ -40,8 +44,8 @@ const defaultButtons = [
     link: "https://www.marketwatch.com/investing/stock/*/financials?mod=mw_quote_tab",
   },
   {
-    name: "StockCharts",
-    link: "https://stockcharts.com/sc3/ui/?s=${input}",
+    name: "Earning History",
+    link: "https://www.tipranks.com/stocks/*/earnings",
   },
 ];
 
